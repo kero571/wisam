@@ -1,0 +1,3 @@
+import {SITE,LEGAL} from '@/data/site';
+export const metadata={title:'Impressum',robots:{index:false,follow:false}};
+export default function P(){return(<main className="mx-auto max-w-2xl px-5 py-20"><a href="/" className="text-sm text-gold">← Back</a><h1 className="mt-6 font-serif text-4xl">Impressum</h1><div className="mt-6 space-y-3 text-mute"><p>Angaben gemäß § 5 DDG</p><p>{LEGAL.name}<br/>{LEGAL.street}<br/>{LEGAL.city}</p><p>E-Mail: {SITE.email}</p><p>USt-IdNr.: {LEGAL.vat}</p><p className="text-xs">Platzhalter — bitte mit den rechtlich korrekten Angaben ergänzen / placeholder: replace with your legally correct details.</p></div></main>)}

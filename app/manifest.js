@@ -1,0 +1,1 @@
+export default function manifest(){return{name:'Wisam Abraham — Wedding Photography & Film',short_name:'Wisam Abraham',start_url:'/',display:'standalone',background_color:'#f6f1e9',theme_color:'#f6f1e9'}}

@@ -1,0 +1,35 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+html{--nav:64px;scroll-behavior:smooth;scroll-padding-top:calc(var(--nav) + 8px);background:#f6f1e9}
+body{@apply bg-cream font-sans text-ink antialiased;overflow-x:clip}
+.btn{@apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 ease-out hover:-translate-y-0.5 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold}
+.btn-gold{@apply bg-gold text-white hover:bg-[#8f6a44] hover:shadow-[0_14px_30px_-12px_rgba(166,124,82,.9)]}
+.btn-gold::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.3) 50%,transparent 65%);transform:translateX(-130%);animation:shine 5s ease-in-out 2.5s infinite}
+.btn-line{@apply border hover:border-gold hover:text-gold;border-color:color-mix(in srgb,currentColor 30%,transparent)}
+.label{@apply text-[11px] font-semibold uppercase tracking-[.28em] text-gold}
+.title{@apply font-serif text-[2rem] leading-[1.12] md:text-5xl}
+.title em{@apply italic text-gold}
+.dark-sec .title em,.hero-t em{color:#d1ad7e;font-style:italic}
+.card{@apply rounded-2xl border border-line bg-white transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_44px_-26px_rgba(80,50,20,.5)]}
+@keyframes navDown{from{transform:translateY(-110%);opacity:0}to{transform:none;opacity:1}}
+@keyframes photoUp{from{transform:translateY(20%) scale(1.14)}to{transform:none}}
+@keyframes fromL{from{opacity:0;transform:translateX(-80px)}to{opacity:1;transform:none}}
+@keyframes fromR{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes shine{0%,55%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@keyframes line{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes step{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.nav-in{animation:navDown 1s cubic-bezier(.16,1,.3,1) both}
+.photo-up{animation:photoUp 1.9s cubic-bezier(.16,1,.3,1) .05s both}
+.from-l{animation:fromL 1.2s cubic-bezier(.16,1,.3,1) var(--d,.8s) both}
+.from-r{animation:fromR 1.2s cubic-bezier(.16,1,.3,1) var(--d,1s) both}
+.fade-u{animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) var(--d,1.2s) both}
+.step-in{animation:step .55s cubic-bezier(.16,1,.3,1) both}.tab-in{animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both}
+.marquee{animation:marquee 34s linear infinite}.marquee:hover{animation-play-state:paused}
+.scroll-line{animation:line 2.4s ease-in-out infinite}
+.mask-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-marker{display:none}
+.plus{transition:transform .3s}details[open] .plus{transform:rotate(45deg)}
+@supports (animation-timeline:view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 4% entry 40%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

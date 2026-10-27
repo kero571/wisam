@@ -1,0 +1,8 @@
+'use client';
+import {useState} from 'react';import Img from './ui/Img';import Icon from './ui/Icon';
+export default function VideoCard({v,ratio,sizes}){const [on,setOn]=useState(false),[busy,setBusy]=useState(false);
+return(<figure className="group"><div className={`relative overflow-hidden rounded-2xl border border-line bg-sand ${ratio}`}>
+{on?<video src={v.src} poster={v.poster} autoPlay controls playsInline preload="auto" onPlaying={()=>setBusy(false)} onWaiting={()=>setBusy(true)} onEnded={()=>setOn(false)} className="absolute inset-0 h-full w-full bg-black object-cover"/>:<>
+<Img src={v.poster} alt={v.title||'Wedding video'} fill loading="lazy" sizes={sizes} className="object-cover transition duration-1000 group-hover:scale-105"/><div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent"/>
+<button type="button" onClick={()=>{setOn(true);setBusy(true)}} aria-label={`Play: ${v.title||'video'}`} className="absolute inset-0 grid place-items-center"><span className="grid h-14 w-14 place-items-center rounded-full bg-white/20 text-white ring-1 ring-white/50 backdrop-blur transition duration-500 group-hover:scale-110 group-hover:bg-gold"><Icon n="play" className="ms-0.5 h-5 w-5"/></span></button></>}
+{on&&busy&&<span aria-hidden className="pointer-events-none absolute inset-0 m-auto h-10 w-10 animate-spin rounded-full border-[3px] border-white/30 border-t-gold2"/>}</div></figure>)}
