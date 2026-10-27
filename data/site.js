@@ -37,7 +37,7 @@ export const NAV = [
   ["Contact", "#inquiry"],
 ];
 export const HERO = {
-  img: "/images/hero.png",
+  img: "/images/hero.webp",
   alt: "Wedding couple in a romantic hillside setting in Germany",
   eyebrow: "WEDDING PHOTOGRAPHY & FILM · GERMANY",
   title: ["Wedding moments for ", "eternity."],
