@@ -1,6 +1,6 @@
 export const SITE = {
   name: "Wisam Abraham",
-  url:"https://wisam.vercel.app",
+  url:"https://wisam-abraham.vercel.app",
   email: "hello@wisamabraham.com",
   whatsapp: "+4917664484516",
   instagram: {
