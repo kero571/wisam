@@ -11,24 +11,28 @@ import Faq from "@/components/Faq";
 import Inquiry from "@/components/Inquiry";
 import Footer from "@/components/Footer";
 import ChatFab from "@/components/ChatFab";
-export default function Page() {
+import { NAV } from "@/data/site";
+import { getContent } from "@/lib/content";
+
+export default async function Page() {
+  const c = await getContent();
   return (
     <>
-      <Header />
+      <Header site={c.site} nav={NAV} />
       <main>
-        <Hero />
-        <Meet />
-        <Stats />
-        <Perks />
-        <Portfolio />
-        <Experience />
-        <Packages />
-        <Testimonials />
-        <Faq />
-        <Inquiry />
+        <Hero hero={c.hero} />
+        <Meet about={c.about} site={c.site} />
+        <Stats stats={c.stats} />
+        <Perks perks={c.perks} />
+        <Portfolio p={c.portfolio} />
+        <Experience e={c.experience} />
+        <Packages p={c.packages} whatsapp={c.site.whatsapp} />
+        <Testimonials t={c.testimonials} />
+        <Faq f={c.faq} />
+        <Inquiry q={c.inquiry} packages={c.packages.items} site={c.site} />
       </main>
-      <Footer />
-      <ChatFab />
+      <Footer site={c.site} nav={NAV} />
+      <ChatFab whatsapp={c.site.whatsapp} message={c.site.chatMessage} />
     </>
   );
 }

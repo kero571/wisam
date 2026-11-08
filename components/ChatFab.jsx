@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Icon from "./ui/Icon";
-import { wa } from "@/data/site";
+import { waLink } from "@/lib/wa";
 
-export default function ChatFab() {
+export default function ChatFab({ whatsapp, message }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -12,17 +12,14 @@ export default function ChatFab() {
       setShow(true);
       return;
     }
-    const io = new IntersectionObserver(
-      ([entry]) => setShow(!entry.isIntersecting),
-      { threshold: 0.5 }
-    );
+    const io = new IntersectionObserver(([entry]) => setShow(!entry.isIntersecting), { threshold: 0.5 });
     io.observe(hero);
     return () => io.disconnect();
   }, []);
 
   return (
     <a
-      href={wa("Hello Wisam!")}
+      href={waLink(whatsapp, message)}
       target="_blank"
       rel="noopener"
       aria-label="Chat on WhatsApp"

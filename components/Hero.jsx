@@ -1,8 +1,9 @@
 import Img from "./ui/Img";
 import Icon from "./ui/Icon";
-import { HERO as h } from "@/data/site";
+
 const d = (s) => ({ "--d": s });
-export default function Hero() {
+
+export default function Hero({ hero: h }) {
   return (
     <header
       id="top"
