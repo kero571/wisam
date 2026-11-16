@@ -1,4 +1,5 @@
 import './globals.css';
+import Analytics from '@/components/Analytics';
 import {Inter,Playfair_Display,Allura} from 'next/font/google';
 import {buildMetadata,buildJsonLd,viewport as v} from '@/lib/seo';
 import {getContent} from '@/lib/content';
