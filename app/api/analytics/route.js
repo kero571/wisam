@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 
 const API = "https://www.clarity.ms/export-data/api/v1/project-live-insights";
 const num = (v) => Number(v) || 0;
@@ -22,7 +23,7 @@ async function isAdmin(req) {
 async function pull(dim) {
   const res = await fetch(`${API}?numOfDays=3&dimension1=${dim}`, {
     headers: { Authorization: `Bearer ${process.env.CLARITY_API_TOKEN}` },
-    next: { revalidate: 43200 }, // 12h cache: Clarity allows only 10 requests/day
+    cache: "no-store", // الكاش بقى على النتيجة كلها تحت، مش على كل طلب
   });
   if (res.status === 429) throw new Error("وصلنا للحد اليومي من Clarity. جرّب بكرة.");
   if (!res.ok) throw new Error(`Clarity رجّع خطأ ${res.status}. اتأكد من CLARITY_API_TOKEN.`);
@@ -55,25 +56,31 @@ function mergePages(rows) {
 const top = (rows, n = 8) => [...rows].sort((a, b) => b.sessions - a.sessions).slice(0, n);
 const sum = (rows, k) => rows.reduce((a, r) => a + r[k], 0);
 
-export async function GET(req) {
-  try {
-    if (!(await isAdmin(req))) return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
-    if (!process.env.CLARITY_API_TOKEN) return NextResponse.json({ error: "CLARITY_API_TOKEN غير مضبوط." }, { status: 503 });
-
+// الـ 4 طلبات بتتعمل مرة واحدة كل 12 ساعة بس، مهما عدد مرات فتح التاب
+const loadInsights = unstable_cache(
+  async () => {
     const [country, device, source, url] = await Promise.all(["Country", "Device", "Source", "URL"].map(pull));
     const pages = mergePages(url);
     const best = (k) => Math.max(...[country, device, source].map((r) => sum(r, k)));
     const total = best("sessions");
     // a card appears only when its numbers are complete; otherwise Clarity is still processing it
     const complete = (rows, n) => (total > 0 && sum(rows, "sessions") >= total * 0.9 ? top(rows, n) : null);
+    return {
+      totals: { sessions: total, users: best("users"), bots: best("bots") },
+      country: complete(country), device: complete(device), source: complete(source), pages: complete(pages, 6),
+    };
+  },
+  ["clarity-insights"],
+  { revalidate: 43200 }
+);
 
-    return NextResponse.json(
-      {
-        totals: { sessions: total, users: best("users"), bots: best("bots") },
-        country: complete(country), device: complete(device), source: complete(source), pages: complete(pages, 6),
-      },
-      { headers: { "Cache-Control": "no-store" } }
-    );
+export async function GET(req) {
+  try {
+    if (!(await isAdmin(req))) return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
+    if (!process.env.CLARITY_API_TOKEN) return NextResponse.json({ error: "CLARITY_API_TOKEN غير مضبوط." }, { status: 503 });
+
+    const data = await loadInsights();
+    return NextResponse.json(data, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     return NextResponse.json({ error: e.message || "فشل تحميل الأرقام" }, { status: 502 });
   }
